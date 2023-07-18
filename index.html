@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 240px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 0 auto;
+        }
+
+        .calculator-screen {
+            text-align: right;
+            font-size: 24px;
+            height: 40px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .calculator-button {
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .calculator-button:hover {
+            background-color: #ddd;
+        }
+
+        .calculator-button:active {
+            background-color: #ccc;
+        }
+
+        .calculator-clear {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="calculator-screen" id="screen">0</div>
+        <div class="calculator-buttons">
+            <div class="calculator-button" onclick="appendNumber('7')">7</div>
+            <div class="calculator-button" onclick="appendNumber('8')">8</div>
+            <div class="calculator-button" onclick="appendNumber('9')">9</div>
+            <div class="calculator-button" onclick="setOperator('+')">+</div>
+            <div class="calculator-button" onclick="appendNumber('4')">4</div>
+            <div class="calculator-button" onclick="appendNumber('5')">5</div>
+            <div class="calculator-button" onclick="appendNumber('6')">6</div>
+            <div class="calculator-button" onclick="setOperator('-')">-</div>
+            <div class="calculator-button" onclick="appendNumber('1')">1</div>
+            <div class="calculator-button" onclick="appendNumber('2')">2</div>
+            <div class="calculator-button" onclick="appendNumber('3')">3</div>
+            <div class="calculator-button" onclick="setOperator('*')">*</div>
+            <div class="calculator-button" onclick="appendNumber('0')">0</div>
+            <div class="calculator-button" onclick="appendNumber('.')">.</div>
+            <div class="calculator-button" onclick="calculate()">=</div>
+            <div class="calculator-button" onclick="setOperator('/')">/</div>
+            <div class="calculator-button calculator-clear" onclick="clearScreen()">C</div>
+        </div>
+    </div>
+
+    <script>
+        let currentNumber = '';
+        let previousNumber = '';
+        let operator = null;
+
+        function updateScreen() {
+            document.getElementById('screen').innerText = currentNumber || '0';
+        }
+
+        function appendNumber(number) {
+            if (number === '.' && currentNumber.includes('.')) return;
+            currentNumber += number;
+            updateScreen();
+        }
+
+        function setOperator(op) {
+            if (currentNumber !== '') {
+                if (operator !== null) {
+                    calculate();
+                }
+                operator = op;
+                previousNumber = currentNumber;
+                currentNumber = '';
+            }
+        }
+
+        function calculate() {
+            if (previousNumber === '' || currentNumber === '') return;
+
+            switch (operator) {
+                case '+':
+                    currentNumber = (parseFloat(previousNumber) + parseFloat(currentNumber)).toString();
+                    break;
+                case '-':
+                    currentNumber = (parseFloat(previousNumber) - parseFloat(currentNumber)).toString();
+                    break;
+                case '*':
+                    currentNumber = (parseFloat(previousNumber) * parseFloat(currentNumber)).toString();
+                    break;
+                case '/':
+                    currentNumber = (parseFloat(previousNumber) / parseFloat(currentNumber)).toString();
+                    break;
+            }
+
+            operator = null;
+            previousNumber = '';
+            updateScreen();
+        }
+
+        function clearScreen() {
+            currentNumber = '';
+            previousNumber = '';
+            operator = null;
+            updateScreen();
+        }
+    </script>
+</body>
+</html>
